@@ -1,0 +1,21 @@
+
+{
+  "name": "abdullah-portfolio",
+  "version": "1.0.0",
+  "description": "Modern MERN Stack Portfolio Website",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "install-deps": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build"
+  },
+  "keywords": ["portfolio", "mern", "react", "nodejs", "mongodb"],
+  "author": "Abdullah",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
