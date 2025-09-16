@@ -52,7 +52,7 @@ const About = () => {
       icon: FaLightbulb,
       title: 'Continuous Learning',
       description: 'Passionate about expanding technical expertise and staying updated with the latest industry trends and technologies.',
-    },
+    }
   ];
 
   return (
