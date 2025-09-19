@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useData } from '../../contexts/DataContext';
-import { FaGithub, FaExternalLinkAlt, FaCode, FaServer, FaDatabase, FaReact } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaCode } from 'react-icons/fa';
 
 const Projects = () => {
   const { projects, loading } = useData();
@@ -35,13 +35,7 @@ const Projects = () => {
     },
   };
 
-  const getTechIcon = (tech) => {
-    const techLower = tech.toLowerCase();
-    if (techLower.includes('react')) return FaReact;
-    if (techLower.includes('node') || techLower.includes('express')) return FaServer;
-    if (techLower.includes('mongodb') || techLower.includes('database')) return FaDatabase;
-    return FaCode;
-  };
+  // removed unused helper to eliminate build-time warning
 
   if (loading) {
     return (

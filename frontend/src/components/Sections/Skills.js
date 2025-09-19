@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useData } from '../../contexts/DataContext';
 import { 
-  FaJs, FaReact, FaNodeJs, FaPython, FaJava, FaHtml5, FaCss3Alt, 
+  FaJs, FaReact, FaNodeJs, FaJava, FaHtml5, FaCss3Alt, 
   FaDatabase, FaGitAlt, FaDocker, FaAws, FaBootstrap,
   FaLanguage, FaCode, FaServer, FaTools
 } from 'react-icons/fa';
