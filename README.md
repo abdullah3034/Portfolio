@@ -61,7 +61,7 @@ abdullah-portfolio/
    Create a `.env` file in the `backend` directory:
    ```env
    NODE_ENV=development
-   PORT=5000
+   PORT=5001
    MONGODB_URI=mongodb://localhost:27017/portfolio
    JWT_SECRET=your_jwt_secret_key
    EMAIL_USER=your_email@gmail.com
