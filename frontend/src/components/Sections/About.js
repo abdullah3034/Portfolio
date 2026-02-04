@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaCode, FaUsers, FaLightbulb, FaRocket, FaHandshake, FaTerminal } from 'react-icons/fa';
+import { FaCode, FaRocket, FaHandshake, FaTerminal } from 'react-icons/fa';
 
 const About = () => {
   const [ref, inView] = useInView({
@@ -76,9 +76,9 @@ const About = () => {
                   I am a passionate software engineer currently pursuing my B.Sc. (Hons) in Information Technology at the <span className="text-primary-600 font-bold">University of Moratuwa</span>. My journey is defined by a relentless drive to bridge the gap between complex logic and seamless user experience.
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
-
+                  Leveraging modern frameworks such as Angular, React, Spring Boot, and the MERN stack, I’ve built end-to-end software systems during my academic years that prioritize clean architecture, scalability, and secure design.
                 </p>
-              </div>Leveraging modern frameworks such as Angular, React, Spring Boot, and the MERN stack, I’ve built end-to-end software systems during my academic years that prioritize clean architecture, scalability, and secure design.
+              </div>
             </div>
 
             {/* Values / Principles Bento Blocks */}

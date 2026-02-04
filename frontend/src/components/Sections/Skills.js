@@ -5,7 +5,7 @@ import { useData } from '../../contexts/DataContext';
 import {
   FaJs, FaReact, FaNodeJs, FaJava, FaHtml5, FaCss3Alt,
   FaDatabase, FaGitAlt, FaDocker, FaAws, FaBootstrap,
-  FaLanguage, FaCode, FaServer, FaTools, FaTerminal, FaLayerGroup,
+  FaLanguage, FaServer, FaTools, FaTerminal, FaLayerGroup,
   FaAngular
 } from 'react-icons/fa';
 import { SiSpringboot } from 'react-icons/si';

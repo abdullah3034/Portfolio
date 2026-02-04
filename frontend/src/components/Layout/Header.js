@@ -6,20 +6,20 @@ import {
   FaCode, FaProjectDiagram, FaGraduationCap, FaEnvelope
 } from 'react-icons/fa';
 
+const navItems = [
+  { name: 'Home', href: 'home', icon: FaHome },
+  { name: 'About', href: 'about', icon: FaUser },
+  { name: 'Skills', href: 'skills', icon: FaCode },
+  { name: 'Projects', href: 'projects', icon: FaProjectDiagram },
+  { name: 'Education', href: 'education', icon: FaGraduationCap },
+  { name: 'Contact', href: 'contact', icon: FaEnvelope },
+];
+
 const Header = () => {
   const { isDark, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-
-  const navItems = [
-    { name: 'Home', href: 'home', icon: FaHome },
-    { name: 'About', href: 'about', icon: FaUser },
-    { name: 'Skills', href: 'skills', icon: FaCode },
-    { name: 'Projects', href: 'projects', icon: FaProjectDiagram },
-    { name: 'Education', href: 'education', icon: FaGraduationCap },
-    { name: 'Contact', href: 'contact', icon: FaEnvelope },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +53,7 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
     };
-  }, [navItems]);
+  }, []);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -80,8 +80,8 @@ const Header = () => {
     >
       <nav
         className={`mx-auto transition-all duration-500 rounded-2xl overflow-hidden border ${scrolled
-            ? 'max-w-4xl bg-white/70 dark:bg-dark-900/70 backdrop-blur-xl shadow-2xl border-primary-100 dark:border-primary-900/30 p-2'
-            : 'max-w-7xl bg-transparent border-transparent p-4'
+          ? 'max-w-4xl bg-white/70 dark:bg-dark-900/70 backdrop-blur-xl shadow-2xl border-primary-100 dark:border-primary-900/30 p-2'
+          : 'max-w-7xl bg-transparent border-transparent p-4'
           }`}
       >
         <div className="flex items-center justify-between">
@@ -118,8 +118,8 @@ const Header = () => {
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
                 className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 z-10 flex items-center space-x-2 ${activeSection === item.href
-                    ? 'text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  ? 'text-white'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
               >
                 {activeSection === item.href && (
@@ -188,8 +188,8 @@ const Header = () => {
                     transition={{ delay: index * 0.05 }}
                     onClick={() => scrollToSection(item.href)}
                     className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-300 ${activeSection === item.href
-                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 font-bold'
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-800'
+                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 font-bold'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-dark-800'
                       }`}
                   >
                     <item.icon className="w-4 h-4" />

@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaGithub, FaLinkedin, FaPaperPlane, FaCheck, FaArrowRight } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaLinkedin, FaPaperPlane, FaCheck, FaArrowRight } from 'react-icons/fa';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
