@@ -1,4 +1,3 @@
-
 {
   "name": "abdullah-portfolio",
   "version": "1.0.0",
@@ -8,14 +7,20 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm start",
-    "install-deps": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "build": "cd frontend && npm run build"
+    "install-deps": "npm install && cd backend && npm install --include=dev && cd ../frontend && npm install --include=dev",
+    "build": "cd frontend && npm run build",
+    "vercel-build": "npm run install-deps && npm run build"
   },
-  "keywords": ["portfolio", "mern", "react", "nodejs", "mongodb"],
+  "keywords": [
+    "portfolio",
+    "mern",
+    "react",
+    "nodejs",
+    "mongodb"
+  ],
   "author": "Abdullah",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }
 }
-
