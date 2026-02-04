@@ -64,7 +64,7 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-tr from-primary-500 via-purple-500 to-pink-500 rounded-full animate-spin-slow opacity-60 blur-xl"></div>
 
             {/* Profile Frame */}
-            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-[6px] border-white dark:border-dark-900 shadow-2xl z-10 bg-white dark:bg-dark-900">
+            <div className="relative w-40 h-40 xs:w-48 xs:h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-[6px] border-white dark:border-dark-900 shadow-2xl z-10 bg-white dark:bg-dark-900">
               {!profileImageError ? (
                 <img
                   src={process.env.PUBLIC_URL + '/Profile.png'}
@@ -84,20 +84,20 @@ const Hero = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.2, type: "spring" }}
-              className="absolute bottom-4 right-4 w-6 h-6 bg-green-500 border-4 border-white dark:border-dark-900 rounded-full z-20"
+              className="absolute bottom-2 right-2 xs:bottom-4 xs:right-4 w-5 h-5 xs:w-6 xs:h-6 bg-green-500 border-4 border-white dark:border-dark-900 rounded-full z-20"
             >
               <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75"></span>
             </motion.div>
           </motion.div>
 
           {/* Hero Content */}
-          <div className="max-w-4xl mx-auto space-y-8">
+          <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
             <motion.div variants={itemVariants}>
-              <span className="inline-flex items-center space-x-2 px-4 py-2 mb-6 text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full backdrop-blur-md border border-primary-200/50 dark:border-primary-800/50">
+              <span className="inline-flex items-center space-x-2 px-4 py-2 mb-4 md:mb-6 text-[10px] xs:text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full backdrop-blur-md border border-primary-200/50 dark:border-primary-800/50">
                 <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
                 <span>Crafting Digital Excellence</span>
               </span>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white leading-[1.05] tracking-tight">
+              <h1 className="text-4xl xs:text-5xl md:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white leading-[1.1] tracking-tight">
                 Software <span className="gradient-text">Developer</span> & <br className="hidden md:block" /> Creative Engineer
               </h1>
             </motion.div>

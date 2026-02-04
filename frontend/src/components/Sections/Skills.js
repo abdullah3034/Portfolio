@@ -61,34 +61,34 @@ const Skills = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-widest text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+          <span className="inline-block px-4 py-1.5 mb-4 text-[10px] xs:text-xs font-bold tracking-widest text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
             Expertise & Capabilities
           </span>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
+          <h2 className="text-4xl xs:text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
             Technical <span className="gradient-text">Mastery</span>
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
             A specialized collection of technologies I use to build robust, scalable, and high-performance digital solutions.
           </p>
         </motion.div>
 
         {/* Professional Filter Bar */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 md:mb-16">
           {categories.map((category) => (
             <motion.button
               key={category.id}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveCategory(category.id)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-2xl font-bold transition-all duration-500 border-2 ${activeCategory === category.id
+              className={`flex items-center space-x-2 px-4 py-2.5 md:px-6 md:py-3 rounded-xl md:rounded-2xl font-bold transition-all duration-500 border-2 ${activeCategory === category.id
                 ? 'bg-primary-600 border-primary-600 text-white shadow-[0_10px_20px_-5px_rgba(59,130,246,0.5)]'
                 : 'bg-white dark:bg-dark-800 border-gray-100 dark:border-white/5 text-gray-600 dark:text-gray-400 hover:border-primary-500/30'
                 }`}
             >
               <category.icon className="w-4 h-4" />
-              <span className="text-sm">{category.name}</span>
+              <span className="text-xs md:text-sm">{category.name}</span>
             </motion.button>
           ))}
         </div>
@@ -96,7 +96,7 @@ const Skills = () => {
         {/* Bento Grid Layout */}
         <motion.div
           layout
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
         >
           <AnimatePresence mode="popLayout">
             {filteredSkills.map((skill, index) => {
@@ -112,7 +112,7 @@ const Skills = () => {
                   whileHover={{ y: -8 }}
                   className="group relative"
                 >
-                  <div className="card h-full p-8 flex flex-col items-center justify-center text-center group-hover:border-primary-500/50 transition-colors">
+                  <div className="card h-full p-6 md:p-8 flex flex-col items-center justify-center text-center group-hover:border-primary-500/50 transition-colors">
                     {/* Floating Background Glow */}
                     <div className="absolute inset-0 bg-primary-500/0 group-hover:bg-primary-500/5 rounded-2xl transition-colors duration-500"></div>
 

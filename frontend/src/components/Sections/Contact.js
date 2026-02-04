@@ -52,38 +52,38 @@ const Contact = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="space-y-12"
+            className="space-y-10 md:space-y-12"
           >
             <div>
-              <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.3em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+              <span className="inline-block px-4 py-1.5 mb-4 md:mb-6 text-[10px] xs:text-xs font-bold tracking-[0.3em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
                 Career Opportunities
               </span>
-              <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white leading-[1.1] mb-8">
+              <h2 className="text-4xl xs:text-5xl md:text-6xl font-black text-gray-900 dark:text-white leading-[1.1] mb-6 md:mb-8">
                 Let's Build a <span className="gradient-text">Future Together.</span>
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
+              <p className="text-base md:text-xl text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
                 I’m ready to bring my technical expertise, problem-solving mindset, and execution skills to a forward-thinking team. Let’s talk about how I can contribute to building your next success story.
               </p>
             </div>
 
-            <div className="grid gap-6">
+            <div className="grid gap-4 md:gap-6">
               {contactOptions.map((opt, i) => (
                 <motion.a
                   key={i}
                   href={opt.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ x: 15 }}
-                  className="flex items-center space-x-6 p-6 glass-card hover:border-primary-500/40 transition-all group"
+                  whileHover={{ x: 10 }}
+                  className="flex items-center space-x-4 md:space-x-6 p-5 md:p-6 glass-card hover:border-primary-500/40 transition-all group"
                 >
-                  <div className={`w-14 h-14 ${opt.color} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
-                    <opt.icon className="text-2xl" />
+                  <div className={`w-12 h-12 md:w-14 md:h-14 ${opt.color} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
+                    <opt.icon className="text-xl" />
                   </div>
                   <div>
-                    <span className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-1">{opt.label}</span>
-                    <span className="text-lg font-bold text-gray-900 dark:text-white">{opt.value}</span>
+                    <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-0.5 md:mb-1">{opt.label}</span>
+                    <span className="text-base md:text-lg font-bold text-gray-900 dark:text-white truncate block max-w-[200px] xs:max-w-none">{opt.value}</span>
                   </div>
-                  <FaArrowRight className="ml-auto text-gray-300 dark:text-gray-700 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />
+                  <FaArrowRight className="ml-auto text-gray-300 dark:text-gray-700 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all hidden sm:block" />
                 </motion.a>
               ))}
             </div>
@@ -95,11 +95,11 @@ const Contact = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="glass-card p-10 md:p-14 relative overflow-hidden">
+            <div className="glass-card p-8 md:p-14 relative overflow-hidden">
               {/* Form Background Accent */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 blur-[80px]"></div>
 
-              <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-10">Send a Detailed Inquiry</h3>
+              <h3 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white mb-8 md:mb-10">Send a Detailed Inquiry</h3>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 relative z-10">
                 <div className="grid md:grid-cols-2 gap-8">

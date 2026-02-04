@@ -40,7 +40,7 @@ const Footer = () => {
               whileHover={{ scale: 1.05 }}
               className="inline-block"
             >
-              <h2 className="text-3xl font-black tracking-tighter text-gray-900 dark:text-white">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-gray-900 dark:text-white">
                 ABDULLAH<span className="text-primary-600">.</span>
               </h2>
             </motion.div>

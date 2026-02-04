@@ -37,15 +37,15 @@ const Education = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+          <span className="inline-block px-4 py-1.5 mb-4 text-[10px] xs:text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
             Academic Path
           </span>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
+          <h2 className="text-4xl xs:text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
             Educational <span className="gradient-text">Milestones</span>
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
             Building a strong theoretical foundation to complement my hands-on engineering expertise.
           </p>
         </motion.div>
@@ -54,7 +54,7 @@ const Education = () => {
           {/* Vertical Timeline Guide */}
           <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-1 bg-gray-200 dark:bg-dark-800 -translate-x-1/2 hidden md:block opacity-30"></div>
 
-          <div className="space-y-16">
+          <div className="space-y-12 md:space-y-16">
             {education.map((edu, index) => (
               <motion.div
                 key={edu._id}
@@ -69,29 +69,29 @@ const Education = () => {
 
                 {/* Content Card */}
                 <div className={`w-full md:w-[45%] ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                  <div className="glass-card p-8 md:p-10 hover:border-primary-500/30 transition-all duration-500 group">
+                  <div className="glass-card p-6 md:p-10 hover:border-primary-500/30 transition-all duration-500 group">
                     <div className={`flex items-center space-x-4 mb-6 ${index % 2 === 0 ? 'md:flex-row-reverse md:space-x-reverse' : ''}`}>
-                      <div className="w-14 h-14 bg-primary-100 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center text-primary-600 dark:text-primary-400">
-                        <FaGraduationCap className="text-2xl" />
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-primary-100 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center text-primary-600 dark:text-primary-400">
+                        <FaGraduationCap className="text-xl md:text-2xl" />
                       </div>
                       <div className="flex-1">
-                        <span className="text-xs font-black text-primary-500 uppercase tracking-widest leading-none block mb-1">
+                        <span className="text-[10px] font-black text-primary-500 uppercase tracking-widest leading-none block mb-1">
                           {formatDate(edu.startDate)} — {edu.current ? 'Present' : formatDate(edu.endDate)}
                         </span>
-                        <h3 className="text-2xl font-black text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
+                        <h3 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
                           {edu.degree}
                         </h3>
                       </div>
                     </div>
 
                     <div className="space-y-4">
-                      <div className={`flex items-center text-gray-700 dark:text-gray-300 font-bold ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
+                      <div className={`flex items-center text-gray-700 dark:text-gray-300 font-bold text-sm md:text-base ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
                         <FaUniversity className="mr-2" />
                         <span>{edu.institution}</span>
                       </div>
 
                       {edu.description && (
-                        <p className="text-gray-600 dark:text-gray-400 font-medium text-sm leading-relaxed">
+                        <p className="text-gray-600 dark:text-gray-400 font-medium text-xs md:text-sm leading-relaxed">
                           {edu.description}
                         </p>
                       )}
@@ -109,7 +109,7 @@ const Education = () => {
                   </div>
                 </div>
 
-                {/* Date Label (Desktop only side indicator) */}
+                {/* Side Indicator (Desktop only) */}
                 <div className="hidden md:block w-[45%]">
                   <div className={`flex flex-col ${index % 2 === 0 ? 'items-start' : 'items-end'}`}>
                     <div className="px-6 py-3 bg-white dark:bg-dark-900 rounded-3xl shadow-xl border border-gray-100 dark:border-white/5 font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-xs">
@@ -123,23 +123,23 @@ const Education = () => {
         </div>
 
         {/* Global Academic Summary */}
-        <div className="mt-32 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <motion.div whileHover={{ y: -5 }} className="glass-card p-10 flex items-start space-x-6">
-            <div className="p-4 bg-orange-100 dark:bg-orange-900/30 rounded-2xl text-orange-600 dark:text-orange-400">
-              <FaAward className="text-3xl" />
+        <div className="mt-20 md:mt-32 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+          <motion.div whileHover={{ y: -5 }} className="glass-card p-8 md:p-10 flex items-start space-x-6">
+            <div className="p-3 md:p-4 bg-orange-100 dark:bg-orange-900/30 rounded-2xl text-orange-600 dark:text-orange-400">
+              <FaAward className="text-2xl md:text-3xl" />
             </div>
             <div>
-              <h4 className="text-xl font-black text-gray-900 dark:text-white mb-2">Technical Foundations</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">Solid grounding in Software Engineering principles, Data Structures, and Algorithmic Complexity.</p>
+              <h4 className="text-lg md:text-xl font-black text-gray-900 dark:text-white mb-2">Technical Foundations</h4>
+              <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">Solid grounding in Software Engineering principles, Data Structures, and Algorithmic Complexity.</p>
             </div>
           </motion.div>
-          <motion.div whileHover={{ y: -5 }} className="glass-card p-10 flex items-start space-x-6">
-            <div className="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl text-purple-600 dark:text-purple-400">
-              <FaBookReader className="text-3xl" />
+          <motion.div whileHover={{ y: -5 }} className="glass-card p-8 md:p-10 flex items-start space-x-6">
+            <div className="p-3 md:p-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl text-purple-600 dark:text-purple-400">
+              <FaBookReader className="text-2xl md:text-3xl" />
             </div>
             <div>
-              <h4 className="text-xl font-black text-gray-900 dark:text-white mb-2">Continuous Learning</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">Actively expanding expertise in Distributed Systems, Cloud Architecture, and Machine Learning.</p>
+              <h4 className="text-lg md:text-xl font-black text-gray-900 dark:text-white mb-2">Continuous Learning</h4>
+              <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">Actively expanding expertise in Distributed Systems, Cloud Architecture, and Machine Learning.</p>
             </div>
           </motion.div>
         </div>

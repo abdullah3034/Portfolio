@@ -130,28 +130,28 @@ const Projects = () => {
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-20"
         >
-          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+          <span className="inline-block px-4 py-1.5 mb-4 text-[10px] xs:text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
             Selected Work
           </span>
-          <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
+          <h2 className="text-4xl xs:text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
             Featured <span className="gradient-text">Creations</span>
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
             A deep dive into the systems I've architected, from enterprise management platforms to embedded hardware solutions.
           </p>
         </motion.div>
 
         {/* Modern Filter Pills */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 md:mb-16">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-wider transition-all duration-300 border-2 ${filter === cat
-                  ? 'bg-primary-600 border-primary-600 text-white shadow-xl'
-                  : 'bg-white dark:bg-dark-900 border-gray-100 dark:border-white/5 text-gray-500 dark:text-gray-400 hover:border-primary-500/30'
+              className={`px-5 py-2 md:px-6 md:py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border-2 ${filter === cat
+                ? 'bg-primary-600 border-primary-600 text-white shadow-xl'
+                : 'bg-white dark:bg-dark-900 border-gray-100 dark:border-white/5 text-gray-500 dark:text-gray-400 hover:border-primary-500/30'
                 }`}
             >
               {cat}
@@ -160,7 +160,7 @@ const Projects = () => {
         </div>
 
         {/* Dynamic Project Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
               <ProjectCard
@@ -180,33 +180,33 @@ const Projects = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 backdrop-blur-2xl bg-black/60"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-10 backdrop-blur-2xl bg-black/60"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="bg-white dark:bg-dark-900 w-full max-w-5xl max-h-full overflow-y-auto rounded-[2rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/20"
+              className="bg-white dark:bg-dark-900 w-full max-w-5xl max-h-[90vh] md:max-h-full overflow-y-auto rounded-[1.5rem] md:rounded-[2.2rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/20"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Content */}
               <div className="flex flex-col md:flex-row h-full">
                 {/* Visual Side */}
-                <div className="md:w-5/12 bg-gradient-to-br from-primary-600 to-purple-700 p-12 flex flex-col justify-center relative overflow-hidden">
+                <div className="md:w-5/12 bg-gradient-to-br from-primary-600 to-purple-700 p-8 md:p-12 flex flex-col justify-center relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                     <div className="absolute top-10 left-10 w-40 h-40 border-4 border-white rounded-full"></div>
                     <div className="absolute bottom-20 right-10 w-60 h-60 border border-white rounded-full"></div>
                   </div>
-                  <FaCode className="text-white/20 text-9xl absolute -bottom-10 -left-10" />
+                  <FaCode className="text-white/20 text-7xl md:text-9xl absolute -bottom-8 md:-bottom-10 -left-8 md:-left-10" />
 
                   <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                    <h3 className="text-4xl font-black text-white leading-tight mb-8">
+                    <h3 className="text-3xl md:text-4xl font-black text-white leading-tight mb-6 md:mb-8">
                       {selectedProject.title}
                     </h3>
-                    <div className="flex flex-wrap gap-2 mb-10">
+                    <div className="flex flex-wrap gap-2 mb-8 md:mb-10">
                       {selectedProject.technologies.map((t, i) => (
-                        <span key={i} className="px-3 py-1 bg-white/20 rounded-lg text-xs font-bold text-white uppercase tracking-wider backdrop-blur-md">
+                        <span key={i} className="px-3 py-1 bg-white/20 rounded-lg text-[10px] font-bold text-white uppercase tracking-wider backdrop-blur-md">
                           {t}
                         </span>
                       ))}
@@ -215,10 +215,10 @@ const Projects = () => {
                 </div>
 
                 {/* Details Side */}
-                <div className="md:w-7/12 p-10 md:p-16 relative">
+                <div className="md:w-7/12 p-8 md:p-16 relative">
                   <button
                     onClick={() => setSelectedProject(null)}
-                    className="absolute top-8 right-8 p-3 bg-gray-100 dark:bg-dark-800 rounded-full hover:bg-red-500 hover:text-white transition-all"
+                    className="absolute top-6 right-6 p-2 md:p-3 bg-gray-100 dark:bg-dark-800 rounded-full hover:bg-red-500 hover:text-white transition-all z-10"
                   >
                     <FaTimes />
                   </button>

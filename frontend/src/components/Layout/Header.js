@@ -101,7 +101,7 @@ const Header = () => {
                 className="absolute -inset-1 border border-primary-500/30 rounded-xl -z-10"
               />
             </div>
-            <div className="hidden lg:block leading-none">
+            <div className="hidden xs:block leading-none">
               <span className="text-lg font-bold text-gray-900 dark:text-white block">
                 Abdullah
               </span>
