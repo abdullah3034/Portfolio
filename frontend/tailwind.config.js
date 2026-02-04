@@ -30,10 +30,11 @@ module.exports = {
           700: '#334155',
           800: '#1e293b',
           900: '#0f172a',
+          950: '#020617',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['Fira Code', 'monospace'],
       },
       animation: {
@@ -43,6 +44,7 @@ module.exports = {
         'slide-in-right': 'slideInRight 0.5s ease-out',
         'bounce-slow': 'bounce 2s infinite',
         'pulse-slow': 'pulse 3s infinite',
+        'spin-slow': 'spin 8s linear infinite',
       },
       keyframes: {
         fadeIn: {

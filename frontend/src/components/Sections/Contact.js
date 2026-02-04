@@ -1,325 +1,188 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaGithub, FaLinkedin, FaPaperPlane, FaCheck } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaGithub, FaLinkedin, FaPaperPlane, FaCheck, FaArrowRight } from 'react-icons/fa';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const contactInfo = [
-    {
-      icon: FaEnvelope,
-      title: 'Email',
-      value: 'abdullahishak3034@gmail.com',
-      href: 'mailto:abdullahishak3034@gmail.com',
-      color: 'from-blue-500 to-blue-600',
-    },
-    {
-      icon: FaPhone,
-      title: 'Phone',
-      value: '+94 750510789',
-      href: 'tel:+94750510789',
-      color: 'from-green-500 to-green-600',
-    },
-    {
-      icon: FaMapMarkerAlt,
-      title: 'Location',
-      value: 'Sri Lanka',
-      href: '#',
-      color: 'from-purple-500 to-purple-600',
-    },
-    {
-      icon: FaLinkedin,
-      title: 'LinkedIn',
-      value: 'abdullah-m-i-8905182b0',
-      href: 'https://www.linkedin.com/in/abdullah-m-i-8905182b0',
-      color: 'from-blue-600 to-blue-700',
-    },
-  ];
-
-  const socialLinks = [
-    {
-      icon: FaGithub,
-      href: 'https://github.com/abdullah3034',
-      label: 'GitHub',
-      color: 'hover:text-gray-900 dark:hover:text-white',
-    },
-    {
-      icon: FaLinkedin,
-      href: 'https://www.linkedin.com/in/abdullah-m-i-8905182b0',
-      label: 'LinkedIn',
-      color: 'hover:text-blue-600',
-    },
-  ];
-
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
       await axios.post('/api/contact', data);
-      toast.success('Message sent successfully! I\'ll get back to you soon.');
+      toast.success('Professional message received. I will respond shortly.');
       setIsSubmitted(true);
       reset();
+      setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error('Contact form error:', error);
-      toast.error('Failed to send message. Please try again.');
+      toast.error('Transmission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  return (
-    <section id="contact" className="section-padding bg-gray-50 dark:bg-dark-900">
-      <motion.div
-        ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
-        className="container-custom"
-      >
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Get In <span className="gradient-text">Touch</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-purple-600 mx-auto rounded-full mb-8"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Have a project in mind or want to discuss opportunities? I'd love to hear from you!
-          </p>
-        </motion.div>
+  const contactOptions = [
+    { icon: FaEnvelope, label: 'Direct Email', value: 'abdullahishak3034@gmail.com', href: 'mailto:abdullahishak3034@gmail.com', color: 'bg-blue-500' },
+    { icon: FaPhone, label: 'Voice / WhatsApp', value: '+94 750510789', href: 'tel:+94750510789', color: 'bg-green-500' },
+    { icon: FaLinkedin, label: 'Professional Profile', value: 'abdullah-m-i-8905182b0', href: 'https://linkedin.com', color: 'bg-blue-600' }
+  ];
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <motion.div variants={itemVariants} className="space-y-8">
+  return (
+    <section id="contact" className="section-padding bg-white dark:bg-dark-950 relative overflow-hidden">
+      {/* Background Decorative Mesh */}
+      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-primary-500/5 to-transparent pointer-events-none"></div>
+
+      <div className="container-custom relative z-10">
+        <div className="grid lg:grid-cols-2 gap-24">
+
+          {/* Info Side */}
+          <motion.div
+            ref={ref}
+            initial={{ opacity: 0, x: -50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="space-y-12"
+          >
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Let's Connect
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                I'm always interested in new opportunities and exciting projects. Whether you have a question,
-                want to collaborate, or just want to say hello, feel free to reach out!
+              <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.3em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+                Career Opportunities
+              </span>
+              <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white leading-[1.1] mb-8">
+                Let's Build a <span className="gradient-text">Future Together.</span>
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
+                I’m ready to bring my technical expertise, problem-solving mindset, and execution skills to a forward-thinking team. Let’s talk about how I can contribute to building your next success story.
               </p>
             </div>
 
-            {/* Contact Cards */}
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
+            <div className="grid gap-6">
+              {contactOptions.map((opt, i) => (
                 <motion.a
-                  key={info.title}
-                  href={info.href}
-                  target={info.href.startsWith('http') ? '_blank' : '_self'}
-                  rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  whileHover={{ scale: 1.02, x: 10 }}
-                  className="flex items-center space-x-4 p-4 bg-white dark:bg-dark-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 group"
+                  key={i}
+                  href={opt.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ x: 15 }}
+                  className="flex items-center space-x-6 p-6 glass-card hover:border-primary-500/40 transition-all group"
                 >
-                  <div className={`w-12 h-12 bg-gradient-to-r ${info.color} rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
-                    <info.icon className="w-6 h-6" />
+                  <div className={`w-14 h-14 ${opt.color} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
+                    <opt.icon className="text-2xl" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
-                      {info.title}
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {info.value}
-                    </p>
+                    <span className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-1">{opt.label}</span>
+                    <span className="text-lg font-bold text-gray-900 dark:text-white">{opt.value}</span>
                   </div>
+                  <FaArrowRight className="ml-auto text-gray-300 dark:text-gray-700 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all" />
                 </motion.a>
               ))}
             </div>
-
-            {/* Social Links */}
-            <div>
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
-                Follow Me
-              </h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -5 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`w-12 h-12 bg-white dark:bg-dark-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 ${social.color} shadow-lg hover:shadow-xl transition-all duration-300`}
-                  >
-                    <social.icon className="w-6 h-6" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
           </motion.div>
 
-          {/* Contact Form */}
-          <motion.div variants={itemVariants}>
-            <div className="bg-white dark:bg-dark-800 rounded-xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Send me a message
-              </h3>
+          {/* Form Side */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="glass-card p-10 md:p-14 relative overflow-hidden">
+              {/* Form Background Accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/10 blur-[80px]"></div>
 
-              {isSubmitted && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="mb-6 p-4 bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700 rounded-lg flex items-center space-x-3"
-                >
-                  <FaCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  <p className="text-green-700 dark:text-green-300 font-medium">
-                    Thank you! Your message has been sent successfully.
-                  </p>
-                </motion.div>
-              )}
+              <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-10">Send a Detailed Inquiry</h3>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Name *
-                    </label>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 relative z-10">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Full Name</label>
                     <input
                       type="text"
-                      id="name"
-                      {...register('name', { 
-                        required: 'Name is required',
-                        minLength: { value: 2, message: 'Name must be at least 2 characters' }
-                      })}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-dark-700 text-gray-900 dark:text-white transition-colors duration-300"
-                      placeholder="Your name"
+                      {...register('name', { required: true })}
+                      className="w-full bg-gray-50 dark:bg-dark-800/50 border-2 border-transparent focus:border-primary-500/50 rounded-2xl p-4 text-gray-900 dark:text-white font-bold transition-all outline-none"
+                      placeholder="John Doe"
                     />
-                    {errors.name && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                        {errors.name.message}
-                      </p>
-                    )}
                   </div>
-
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Email *
-                    </label>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Email Address</label>
                     <input
                       type="email"
-                      id="email"
-                      {...register('email', { 
-                        required: 'Email is required',
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: 'Invalid email address'
-                        }
-                      })}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-dark-700 text-gray-900 dark:text-white transition-colors duration-300"
-                      placeholder="your.email@example.com"
+                      {...register('email', { required: true })}
+                      className="w-full bg-gray-50 dark:bg-dark-800/50 border-2 border-transparent focus:border-primary-500/50 rounded-2xl p-4 text-gray-900 dark:text-white font-bold transition-all outline-none"
+                      placeholder="john@example.com"
                     />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                        {errors.email.message}
-                      </p>
-                    )}
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Subject *
-                  </label>
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Subject</label>
                   <input
                     type="text"
-                    id="subject"
-                    {...register('subject', { 
-                      required: 'Subject is required',
-                      minLength: { value: 5, message: 'Subject must be at least 5 characters' }
-                    })}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-dark-700 text-gray-900 dark:text-white transition-colors duration-300"
-                    placeholder="What's this about?"
+                    {...register('subject', { required: true })}
+                    className="w-full bg-gray-50 dark:bg-dark-800/50 border-2 border-transparent focus:border-primary-500/50 rounded-2xl p-4 text-gray-900 dark:text-white font-bold transition-all outline-none"
+                    placeholder="Project Opportunity"
                   />
-                  {errors.subject && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                      {errors.subject.message}
-                    </p>
-                  )}
                 </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Message *
-                  </label>
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Your Message</label>
                   <textarea
-                    id="message"
-                    rows={6}
-                    {...register('message', { 
-                      required: 'Message is required',
-                      minLength: { value: 10, message: 'Message must be at least 10 characters' }
-                    })}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-dark-700 text-gray-900 dark:text-white transition-colors duration-300 resize-none"
-                    placeholder="Tell me about your project or just say hello..."
+                    rows={5}
+                    {...register('message', { required: true })}
+                    className="w-full bg-gray-50 dark:bg-dark-800/50 border-2 border-transparent focus:border-primary-500/50 rounded-2xl p-4 text-gray-900 dark:text-white font-bold transition-all outline-none resize-none"
+                    placeholder="Describe your vision..."
                   />
-                  {errors.message && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                      {errors.message.message}
-                    </p>
-                  )}
                 </div>
 
-                <motion.button
+                <button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                  className={`w-full btn-primary flex items-center justify-center space-x-2 ${
-                    isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className="w-full btn-primary !py-5 flex items-center justify-center space-x-3 text-lg"
                 >
                   {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Sending...</span>
-                    </>
+                    <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
                   ) : (
                     <>
-                      <FaPaperPlane className="w-5 h-5" />
-                      <span>Send Message</span>
+                      <FaPaperPlane className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      <span>Send Professional Inquiry</span>
                     </>
                   )}
-                </motion.button>
+                </button>
               </form>
+
+              <AnimatePresence>
+                {isSubmitted && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="absolute inset-0 z-20 flex items-center justify-center p-10 bg-white dark:bg-dark-900 text-center"
+                  >
+                    <div className="space-y-4">
+                      <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white text-4xl mx-auto mb-6 shadow-xl">
+                        <FaCheck />
+                      </div>
+                      <h4 className="text-3xl font-black text-gray-900 dark:text-white">Message Dispatched!</h4>
+                      <p className="text-gray-500 dark:text-gray-400 font-bold">Thank you for reaching out. I'll get back to you within 24 hours.</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
 
 export default Contact;
-

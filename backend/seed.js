@@ -30,11 +30,11 @@ const seedData = async () => {
     // Create projects
     const projects = [
       {
-        title: 'Task Management System',
-        description: 'MERN stack project with task creation, assignment, progress tracking, prioritization, status updates, and real-time team coordination.',
-        longDescription: 'A comprehensive task management system built with the MERN stack. Features include user authentication, role-based access control, real-time updates, task assignment, progress tracking, and team collaboration tools.',
-        technologies: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Socket.io', 'JWT', 'Tailwind CSS'],
-        githubUrl: 'https://github.com/abdullah3034/Task-Management-System',
+        title: 'Automobile Service Management System',
+        description: 'Enterprise application with Spring Security 6 JWT authentication and a React-based management client.',
+        longDescription: 'A full-stack system featuring role-based route protection, OTP-based password recovery, and email notifications. Includes an automated dashboard for profile management and auditing.',
+        technologies: ['Spring Boot', 'React.js', 'PostgreSQL', 'Spring Security 6', 'Tailwind CSS', 'Axios'],
+        githubUrl: 'https://github.com/abdullah3034/automobile_service_management',
         liveUrl: '',
         featured: true,
         order: 1
@@ -44,11 +44,42 @@ const seedData = async () => {
         description: 'Full-stack MERN project with Tailwind CSS UI, secure JWT authentication, role-based access control, and cart/package booking workflows.',
         longDescription: 'A complete hotel management system developed as a 2nd year university project. Includes room booking, package management, user authentication, and admin dashboard.',
         technologies: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Tailwind CSS', 'Bootstrap'],
-        githubUrl: 'https://github.com/abdullah3034/2nd_Year_Proj',
+        githubUrl: 'https://github.com/abdullah3034/HMS_Project',
         liveUrl: '',
         featured: true,
         order: 2
-      }
+      },
+      {
+        title: 'Hackathon Registration & Project Competition App',
+        description: 'Angular 18 application with robust role-based access control for organizers and participants.',
+        longDescription: 'A scalable competition management platform featuring user authentication, secure session handling, and an end-to-end submission workflow. Includes an administrative dashboard for evaluating uploads and declaring winners.',
+        technologies: ['Angular 18', 'Bootstrap 5', 'TypeScript', 'REST APIs'],
+        githubUrl: 'https://github.com/abdullah3034/HackethonRegistrationAPP',
+        liveUrl: '',
+        featured: true,
+        order: 3
+      },
+      {
+        title: 'Student Management System',
+        description: 'Full-stack MERN project with automated student ID generation and real-time regex-based search capabilities.',
+        longDescription: 'A modern, type-safe management platform built with TypeScript and MERN. It features automated data processing using Mongoose middleware for age calculation and unique ID generation (e.g., STU_0001). The system includes a high-fidelity dashboard with a robust search engine for real-time discovery across student records.',
+        technologies: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'TypeScript', 'Tailwind CSS', 'Mongoose', 'Lucide React'],
+        githubUrl: 'https://github.com/abdullah3034/StudentManagementSystem',
+        liveUrl: 'https://student-management-system-s4t4.vercel.app/',
+        featured: true,
+        order: 4
+      },
+      {
+        title: 'Automated Potato Sorting Machine',
+        description: 'Hardware-software integration project using Arduino to grade produce by size.',
+        longDescription: 'An automated grading system that categorizes potatoes into small, medium, and large sizes. Developed using Arduino programming to control stepper and wiper motors.',
+        technologies: ['Arduino', 'C++', 'Stepper Motors', 'Embedded Systems'],
+        githubUrl: 'https://github.com/abdullah3034',
+        liveUrl: '',
+        featured: false,
+        order: 5
+      },
+
     ];
 
     for (const project of projects) {
@@ -68,17 +99,19 @@ const seedData = async () => {
       // Frontend
       { name: 'React.js', category: 'frontend', level: 90, order: 1 },
       { name: 'Next.js', category: 'frontend', level: 80, order: 2 },
-      { name: 'Redux', category: 'frontend', level: 85, order: 3 },
-      { name: 'Redux Toolkit', category: 'frontend', level: 85, order: 4 },
-      { name: 'Tailwind CSS', category: 'frontend', level: 90, order: 5 },
-      { name: 'Bootstrap', category: 'frontend', level: 80, order: 6 },
-      // { name: 'Responsive Design', category: 'frontend', level: 95, order: 7 },
+      { name: 'Angular', category: 'frontend', level: 75, order: 3 },
+      { name: 'Redux', category: 'frontend', level: 85, order: 4 },
+      { name: 'Redux Toolkit', category: 'frontend', level: 85, order: 5 },
+      { name: 'Tailwind CSS', category: 'frontend', level: 90, order: 6 },
+      { name: 'Bootstrap', category: 'frontend', level: 80, order: 7 },
 
       // Backend
       { name: 'Node.js', category: 'backend', level: 85, order: 1 },
       { name: 'Express.js', category: 'backend', level: 85, order: 2 },
-      { name: 'RESTful APIs', category: 'backend', level: 90, order: 3 },
-      { name: 'Microservices', category: 'backend', level: 70, order: 4 },
+      { name: 'Java', category: 'backend', level: 80, order: 3 },
+      { name: 'Spring Boot', category: 'backend', level: 75, order: 4 },
+      { name: 'RESTful APIs', category: 'backend', level: 90, order: 5 },
+      { name: 'Microservices', category: 'backend', level: 70, order: 6 },
 
       // Databases
       { name: 'MongoDB', category: 'databases', level: 85, order: 1 },
@@ -89,11 +122,11 @@ const seedData = async () => {
       { name: 'Git & GitHub', category: 'tools', level: 90, order: 1 },
       { name: 'Docker', category: 'tools', level: 70, order: 2 },
       { name: 'Postman', category: 'tools', level: 85, order: 3 },
-      { name: 'VS Code', category: 'tools', level: 95, order: 4 },
+      // { name: 'VS Code', category: 'tools', level: 95, order: 4 },
       { name: 'Agile/Scrum', category: 'tools', level: 80, order: 5 },
 
       // Languages (Spoken)
-     
+
     ];
 
     for (const skill of skills) {

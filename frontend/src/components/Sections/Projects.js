@@ -1,365 +1,271 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useData } from '../../contexts/DataContext';
-import { FaGithub, FaExternalLinkAlt, FaCode } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaCode, FaLayerGroup, FaTimes, FaTools, FaCheckCircle } from 'react-icons/fa';
 
+// 3D Tilt Card Component
+const ProjectCard = ({ project, onClick }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      layout
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      whileHover={{ y: -10 }}
+      onClick={() => onClick(project)}
+      className="relative group cursor-pointer perspective-2000"
+    >
+      <div className="card h-full overflow-hidden flex flex-col bg-white/80 dark:bg-dark-900/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-2xl">
+        {/* Project Visual Header */}
+        <div className="relative h-56 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-purple-600 to-pink-600 opacity-90 group-hover:scale-110 transition-transform duration-700"></div>
+          <div className="absolute inset-0 flex items-center justify-center p-8 translate-z-20">
+            <div className="text-center text-white">
+              <FaCode className="w-16 h-16 mx-auto mb-4 opacity-50 group-hover:scale-125 transition-transform duration-500" />
+              <h3 className="text-2xl font-black tracking-tight leading-tight">{project.title}</h3>
+            </div>
+          </div>
+
+          {/* Top Tech Badges */}
+          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+            {project.technologies.slice(0, 2).map((tech, i) => (
+              <span key={i} className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-white border border-white/30">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Project Info */}
+        <div className="p-8 flex-1 flex flex-col">
+          <p className="text-gray-600 dark:text-gray-400 text-sm font-medium line-clamp-3 mb-6 leading-relaxed">
+            {project.description}
+          </p>
+
+          <div className="mt-auto flex items-center justify-between">
+            <div className="flex space-x-3">
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="p-3 bg-gray-100 dark:bg-dark-800 rounded-xl hover:bg-primary-500 hover:text-white transition-all duration-300">
+                <FaGithub className="w-4 h-4" />
+              </a>
+              {project.liveUrl && (
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="p-3 bg-primary-600 text-white rounded-xl hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300">
+                  <FaExternalLinkAlt className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+            <span className="text-xs font-black uppercase tracking-widest text-primary-600 dark:text-primary-400 group-hover:translate-x-2 transition-transform">
+              View Details →
+            </span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Main Projects Component
 const Projects = () => {
   const { projects, loading } = useData();
   const [selectedProject, setSelectedProject] = useState(null);
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
+  const [filter, setFilter] = useState('All');
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  // Dynamically extract categories from technologies or use predefined ones
+  const categories = ['All', 'Web', 'MERN', 'Spring', 'Hardware'];
+
+  const filteredProjects = projects.filter(p => {
+    if (filter === 'All') return true;
+    if (filter === 'Web') return p.technologies.some(t => ['React.js', 'Angular 18', 'JavaScript', 'TypeScript'].includes(t));
+    if (filter === 'MERN') return p.technologies.some(t => ['MongoDB', 'Express.js', 'React.js', 'Node.js'].includes(t));
+    if (filter === 'Spring') return p.technologies.some(t => t.includes('Spring'));
+    if (filter === 'Hardware') return p.technologies.some(t => ['Arduino', 'Embedded Systems'].includes(t));
+    return true;
   });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  // removed unused helper to eliminate build-time warning
 
   if (loading) {
     return (
-      <section id="projects" className="section-padding bg-gray-50 dark:bg-dark-900">
-        <div className="container-custom text-center">
-          <div className="loading-dots mx-auto">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
+      <section id="projects" className="section-padding flex items-center justify-center min-h-screen">
+        <div className="loading-dots"><div></div><div></div><div></div><div></div></div>
       </section>
     );
   }
 
   return (
-    <section id="projects" className="section-padding bg-gray-50 dark:bg-dark-900">
-      <motion.div
-        ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
-        className="container-custom"
-      >
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            My <span className="gradient-text">Projects</span>
+    <section id="projects" className="section-padding bg-gray-50 dark:bg-dark-950 relative overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary-500/5 blur-[120px] pointer-events-none"></div>
+
+      <div className="container-custom relative z-10">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          className="text-center mb-20"
+        >
+          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+            Selected Work
+          </span>
+          <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
+            Featured <span className="gradient-text">Creations</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-purple-600 mx-auto rounded-full mb-8"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            A showcase of my recent work and projects that demonstrate my skills and passion for development
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+            A deep dive into the systems I've architected, from enterprise management platforms to embedded hardware solutions.
           </p>
         </motion.div>
 
-        {/* Featured Projects */}
-        <motion.div
-          variants={containerVariants}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16"
-        >
-          {projects
-            .filter(project => project.featured)
-            .map((project, index) => (
-              <motion.div
-                key={project._id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.02, y: -10 }}
-                className="card overflow-hidden group cursor-pointer"
-                onClick={() => setSelectedProject(project)}
-              >
-                {/* Project Image/Icon */}
-                <div className="h-48 bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <FaCode className="w-16 h-16 mx-auto mb-4 opacity-80" />
-                    <h3 className="text-2xl font-bold">{project.title}</h3>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                    {project.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.technologies.slice(0, 4).map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 text-xs rounded-full font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 4 && (
-                      <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full font-medium">
-                        +{project.technologies.length - 4} more
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex space-x-4">
-                    <motion.a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-300"
-                    >
-                      <FaGithub className="w-4 h-4" />
-                      <span className="text-sm font-medium">Code</span>
-                    </motion.a>
-                    
-                    {project.liveUrl && (
-                      <motion.a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={(e) => e.stopPropagation()}
-                        className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-300"
-                      >
-                        <FaExternalLinkAlt className="w-4 h-4" />
-                        <span className="text-sm font-medium">Live Demo</span>
-                      </motion.a>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-        </motion.div>
-
-        {/* Other Projects */}
-        {projects.filter(project => !project.featured).length > 0 && (
-          <>
-            <motion.div variants={itemVariants} className="text-center mb-12">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Other Projects
-              </h3>
-              <div className="w-16 h-1 bg-gradient-to-r from-primary-500 to-purple-600 mx-auto rounded-full"></div>
-            </motion.div>
-
-            <motion.div
-              variants={containerVariants}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        {/* Modern Filter Pills */}
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setFilter(cat)}
+              className={`px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-wider transition-all duration-300 border-2 ${filter === cat
+                  ? 'bg-primary-600 border-primary-600 text-white shadow-xl'
+                  : 'bg-white dark:bg-dark-900 border-gray-100 dark:border-white/5 text-gray-500 dark:text-gray-400 hover:border-primary-500/30'
+                }`}
             >
-              {projects
-                .filter(project => !project.featured)
-                .map((project, index) => (
-                  <motion.div
-                    key={project._id}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="card p-6 group cursor-pointer"
-                    onClick={() => setSelectedProject(project)}
-                  >
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center">
-                        <FaCode className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 dark:text-white">
-                          {project.title}
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {project.technologies.slice(0, 2).join(', ')}
-                        </p>
-                      </div>
-                    </div>
+              {cat}
+            </button>
+          ))}
+        </div>
 
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
-                      {project.description}
-                    </p>
+        {/* Dynamic Project Grid */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <ProjectCard
+                key={project._id}
+                project={project}
+                onClick={setSelectedProject}
+              />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
 
-                    <div className="flex space-x-2">
-                      <motion.a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={(e) => e.stopPropagation()}
-                        className="p-2 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-300"
-                      >
-                        <FaGithub className="w-4 h-4" />
-                      </motion.a>
-                      
-                      {project.liveUrl && (
-                        <motion.a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={(e) => e.stopPropagation()}
-                          className="p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-300"
-                        >
-                          <FaExternalLinkAlt className="w-4 h-4" />
-                        </motion.a>
-                      )}
+      {/* Modern Project Modal (Full Page Design) */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 backdrop-blur-2xl bg-black/60"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white dark:bg-dark-900 w-full max-w-5xl max-h-full overflow-y-auto rounded-[2rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] border border-white/20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Content */}
+              <div className="flex flex-col md:flex-row h-full">
+                {/* Visual Side */}
+                <div className="md:w-5/12 bg-gradient-to-br from-primary-600 to-purple-700 p-12 flex flex-col justify-center relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                    <div className="absolute top-10 left-10 w-40 h-40 border-4 border-white rounded-full"></div>
+                    <div className="absolute bottom-20 right-10 w-60 h-60 border border-white rounded-full"></div>
+                  </div>
+                  <FaCode className="text-white/20 text-9xl absolute -bottom-10 -left-10" />
+
+                  <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                    <h3 className="text-4xl font-black text-white leading-tight mb-8">
+                      {selectedProject.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2 mb-10">
+                      {selectedProject.technologies.map((t, i) => (
+                        <span key={i} className="px-3 py-1 bg-white/20 rounded-lg text-xs font-bold text-white uppercase tracking-wider backdrop-blur-md">
+                          {t}
+                        </span>
+                      ))}
                     </div>
                   </motion.div>
-                ))}
-            </motion.div>
-          </>
-        )}
+                </div>
 
-        {/* Project Statistics */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-16 text-center"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">{projects.length}</div>
-              <div className="text-sm opacity-90">Total Projects</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {projects.filter(p => p.featured).length}
-              </div>
-              <div className="text-sm opacity-90">Featured Projects</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-green-500 to-green-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {new Set(projects.flatMap(p => p.technologies)).size}
-              </div>
-              <div className="text-sm opacity-90">Technologies Used</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">100%</div>
-              <div className="text-sm opacity-90">MERN Stack</div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </motion.div>
+                {/* Details Side */}
+                <div className="md:w-7/12 p-10 md:p-16 relative">
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="absolute top-8 right-8 p-3 bg-gray-100 dark:bg-dark-800 rounded-full hover:bg-red-500 hover:text-white transition-all"
+                  >
+                    <FaTimes />
+                  </button>
 
-      {/* Project Modal */}
-      {selectedProject && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-          onClick={() => setSelectedProject(null)}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="bg-white dark:bg-dark-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {selectedProject.title}
-                </h2>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  <FaExternalLinkAlt className="w-5 h-5" />
-                </button>
-              </div>
+                  <div className="space-y-10">
+                    <section>
+                      <h4 className="text-xs font-black uppercase tracking-[0.3em] text-primary-600 dark:text-primary-400 mb-4 flex items-center">
+                        <FaLayerGroup className="mr-2" /> Project Overview
+                      </h4>
+                      <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-medium">
+                        {selectedProject.longDescription || selectedProject.description}
+                      </p>
+                    </section>
 
-              <div className="space-y-6">
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {selectedProject.longDescription || selectedProject.description}
-                </p>
+                    <section>
+                      <h4 className="text-xs font-black uppercase tracking-[0.3em] text-primary-600 dark:text-primary-400 mb-6 flex items-center">
+                        <FaTools className="mr-2" /> Technical Stack
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        {selectedProject.technologies.map((t, i) => (
+                          <div key={i} className="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-dark-800 rounded-2xl border border-gray-100 dark:border-white/5">
+                            <FaCheckCircle className="text-primary-500" />
+                            <span className="font-bold text-gray-900 dark:text-white text-sm">{t}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
 
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-                    Technologies Used
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.technologies.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 text-sm rounded-full font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    <div className="flex gap-4 pt-6">
+                      <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-primary group !py-4 flex-1 text-center">
+                        <span>Source Code</span>
+                      </a>
+                      {selectedProject.liveUrl && (
+                        <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary !py-4 flex-1 text-center font-black">
+                          Review Demo
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex space-x-4">
-                  <motion.a
-                    href={selectedProject.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="btn-primary inline-flex items-center space-x-2"
-                  >
-                    <FaGithub className="w-4 h-4" />
-                    <span>View Code</span>
-                  </motion.a>
-                  
-                  {selectedProject.liveUrl && (
-                    <motion.a
-                      href={selectedProject.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="btn-secondary inline-flex items-center space-x-2"
-                    >
-                      <FaExternalLinkAlt className="w-4 h-4" />
-                      <span>Live Demo</span>
-                    </motion.a>
-                  )}
-                </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 };
 
 export default Projects;
-

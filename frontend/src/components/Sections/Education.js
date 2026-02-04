@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useData } from '../../contexts/DataContext';
-import { FaGraduationCap, FaMapMarkerAlt, FaCalendarAlt, FaUniversity } from 'react-icons/fa';
+import { FaGraduationCap, FaMapMarkerAlt, FaCalendarAlt, FaUniversity, FaAward, FaBookReader } from 'react-icons/fa';
 
 const Education = () => {
   const { education, loading } = useData();
@@ -11,236 +11,141 @@ const Education = () => {
     threshold: 0.1,
   });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
     });
-  };
-
-  const getDuration = (startDate, endDate, current) => {
-    if (current) {
-      return `${formatDate(startDate)} - Present`;
-    }
-    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
   };
 
   if (loading) {
     return (
-      <section id="education" className="section-padding bg-white dark:bg-dark-800">
-        <div className="container-custom text-center">
-          <div className="loading-dots mx-auto">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
+      <section id="education" className="section-padding bg-gray-50 dark:bg-dark-900 flex items-center justify-center min-h-[400px]">
+        <div className="loading-dots"><div></div><div></div><div></div><div></div></div>
       </section>
     );
   }
 
   return (
-    <section id="education" className="section-padding bg-white dark:bg-dark-800">
-      <motion.div
-        ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
-        className="container-custom"
-      >
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            My <span className="gradient-text">Education</span>
+    <section id="education" className="section-padding bg-gray-50 dark:bg-dark-950 relative overflow-hidden">
+      {/* Decorative Gradient Background */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-600 via-purple-600 to-pink-600 opacity-50"></div>
+
+      <div className="container-custom relative z-10">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-[0.2em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+            Academic Path
+          </span>
+          <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
+            Educational <span className="gradient-text">Milestones</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-purple-600 mx-auto rounded-full mb-8"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            My academic journey and educational background that shaped my foundation in technology
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+            Building a strong theoretical foundation to complement my hands-on engineering expertise.
           </p>
         </motion.div>
 
-        {/* Education Timeline */}
-        <div className="relative">
-          {/* Timeline Line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 via-primary-400 to-primary-600"></div>
+        <div className="max-w-4xl mx-auto relative">
+          {/* Vertical Timeline Guide */}
+          <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-1 bg-gray-200 dark:bg-dark-800 -translate-x-1/2 hidden md:block opacity-30"></div>
 
-          <motion.div variants={containerVariants} className="space-y-12">
+          <div className="space-y-16">
             {education.map((edu, index) => (
               <motion.div
                 key={edu._id}
-                variants={itemVariants}
-                className="timeline-item relative"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
+                className={`flex flex-col md:flex-row items-center justify-between relative ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                  }`}
               >
-                <div className="flex items-start space-x-6">
-                  {/* Timeline Icon */}
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="flex-shrink-0 w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center border-4 border-white dark:border-dark-800 shadow-lg"
-                  >
-                    <FaGraduationCap className="w-8 h-8 text-primary-600 dark:text-primary-400" />
-                  </motion.div>
+                {/* Timeline Dot */}
+                <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-primary-500 rounded-full border-4 border-white dark:border-dark-900 shadow-[0_0_15px_rgba(59,130,246,0.5)] z-20 -translate-x-1/2 hidden md:block"></div>
 
-                  {/* Education Content */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="flex-1 bg-white dark:bg-dark-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700"
-                  >
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {/* Content Card */}
+                <div className={`w-full md:w-[45%] ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
+                  <div className="glass-card p-8 md:p-10 hover:border-primary-500/30 transition-all duration-500 group">
+                    <div className={`flex items-center space-x-4 mb-6 ${index % 2 === 0 ? 'md:flex-row-reverse md:space-x-reverse' : ''}`}>
+                      <div className="w-14 h-14 bg-primary-100 dark:bg-primary-900/50 rounded-2xl flex items-center justify-center text-primary-600 dark:text-primary-400">
+                        <FaGraduationCap className="text-2xl" />
+                      </div>
+                      <div className="flex-1">
+                        <span className="text-xs font-black text-primary-500 uppercase tracking-widest leading-none block mb-1">
+                          {formatDate(edu.startDate)} — {edu.current ? 'Present' : formatDate(edu.endDate)}
+                        </span>
+                        <h3 className="text-2xl font-black text-gray-900 dark:text-white group-hover:text-primary-600 transition-colors">
                           {edu.degree}
                         </h3>
-                        {edu.field && (
-                          <p className="text-primary-600 dark:text-primary-400 font-medium mb-2">
-                            {edu.field}
-                          </p>
-                        )}
-                        <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
-                          <div className="flex items-center space-x-1">
-                            <FaUniversity className="w-4 h-4" />
-                            <span>{edu.institution}</span>
-                          </div>
-                          {edu.location && (
-                            <div className="flex items-center space-x-1">
-                              <FaMapMarkerAlt className="w-4 h-4" />
-                              <span>{edu.location}</span>
-                            </div>
-                          )}
-                        </div>
                       </div>
-
-                      {/* Duration Badge */}
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        className="mt-4 lg:mt-0"
-                      >
-                        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-primary-100 dark:bg-primary-900 rounded-full">
-                          <FaCalendarAlt className="w-4 h-4 text-primary-600 dark:text-primary-400" />
-                          <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-                            {getDuration(edu.startDate, edu.endDate, edu.current)}
-                          </span>
-                          {edu.current && (
-                            <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs rounded-full font-medium">
-                              Current
-                            </span>
-                          )}
-                        </div>
-                      </motion.div>
                     </div>
 
-                    {edu.description && (
-                      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                        {edu.description}
-                      </p>
-                    )}
-
-                    {/* Progress Indicator for Current Education */}
-                    {edu.current && (
-                      <div className="mt-4">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Progress
-                          </span>
-                          <span className="text-sm font-bold text-primary-600 dark:text-primary-400">
-                            {Math.round((new Date() - new Date(edu.startDate)) / (4 * 365 * 24 * 60 * 60 * 1000) * 100)}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                          <motion.div
-                            className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full"
-                            initial={{ width: 0 }}
-                            animate={inView ? { width: `${Math.min(Math.round((new Date() - new Date(edu.startDate)) / (4 * 365 * 24 * 60 * 60 * 1000) * 100), 100)}%` } : { width: 0 }}
-                            transition={{ duration: 2, delay: index * 0.2, ease: 'easeOut' }}
-                          />
-                        </div>
+                    <div className="space-y-4">
+                      <div className={`flex items-center text-gray-700 dark:text-gray-300 font-bold ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
+                        <FaUniversity className="mr-2" />
+                        <span>{edu.institution}</span>
                       </div>
-                    )}
-                  </motion.div>
+
+                      {edu.description && (
+                        <p className="text-gray-600 dark:text-gray-400 font-medium text-sm leading-relaxed">
+                          {edu.description}
+                        </p>
+                      )}
+
+                      {/* Achievement Badge (Simulated for aesthetics) */}
+                      <div className={`flex flex-wrap gap-2 ${index % 2 === 0 ? 'md:justify-end' : ''}`}>
+                        <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-black uppercase tracking-tighter rounded-full border border-green-500/20">
+                          Academic Excellence
+                        </span>
+                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-black uppercase tracking-tighter rounded-full border border-blue-500/20">
+                          Research Focused
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Date Label (Desktop only side indicator) */}
+                <div className="hidden md:block w-[45%]">
+                  <div className={`flex flex-col ${index % 2 === 0 ? 'items-start' : 'items-end'}`}>
+                    <div className="px-6 py-3 bg-white dark:bg-dark-900 rounded-3xl shadow-xl border border-gray-100 dark:border-white/5 font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-xs">
+                      {edu.current ? "Ongoing Journey" : "Historical Milestone"}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        {/* Education Summary */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-16 text-center"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="p-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {education.filter(edu => edu.current).length > 0 ? 'Current' : 'Completed'}
-              </div>
-              <div className="text-sm opacity-90">Status</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="p-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {new Date().getFullYear() - new Date(education[0]?.startDate || new Date()).getFullYear() + 1}
-              </div>
-              <div className="text-sm opacity-90">Years of Study</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="p-6 bg-gradient-to-br from-green-500 to-green-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">IT</div>
-              <div className="text-sm opacity-90">Field of Study</div>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Additional Information */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-16 text-center"
-        >
-          <div className="bg-gray-50 dark:bg-dark-700 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Academic Focus
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
-              My academic journey at the University of Moratuwa has provided me with a strong foundation in Information Technology,
-              covering areas such as software engineering, database management, system design, and emerging technologies.
-              This education has been instrumental in developing my analytical thinking and problem-solving skills.
-            </p>
-          </div>
-        </motion.div>
-      </motion.div>
+        {/* Global Academic Summary */}
+        <div className="mt-32 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <motion.div whileHover={{ y: -5 }} className="glass-card p-10 flex items-start space-x-6">
+            <div className="p-4 bg-orange-100 dark:bg-orange-900/30 rounded-2xl text-orange-600 dark:text-orange-400">
+              <FaAward className="text-3xl" />
+            </div>
+            <div>
+              <h4 className="text-xl font-black text-gray-900 dark:text-white mb-2">Technical Foundations</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">Solid grounding in Software Engineering principles, Data Structures, and Algorithmic Complexity.</p>
+            </div>
+          </motion.div>
+          <motion.div whileHover={{ y: -5 }} className="glass-card p-10 flex items-start space-x-6">
+            <div className="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-2xl text-purple-600 dark:text-purple-400">
+              <FaBookReader className="text-3xl" />
+            </div>
+            <div>
+              <h4 className="text-xl font-black text-gray-900 dark:text-white mb-2">Continuous Learning</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">Actively expanding expertise in Distributed Systems, Cloud Architecture, and Machine Learning.</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 };
 
 export default Education;
-

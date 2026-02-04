@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useData } from '../../contexts/DataContext';
-import { 
-  FaJs, FaReact, FaNodeJs, FaJava, FaHtml5, FaCss3Alt, 
+import {
+  FaJs, FaReact, FaNodeJs, FaJava, FaHtml5, FaCss3Alt,
   FaDatabase, FaGitAlt, FaDocker, FaAws, FaBootstrap,
-  FaLanguage, FaCode, FaServer, FaTools
+  FaLanguage, FaCode, FaServer, FaTools, FaTerminal, FaLayerGroup,
+  FaAngular
 } from 'react-icons/fa';
+import { SiSpringboot } from 'react-icons/si';
 
 const Skills = () => {
   const { skills, loading } = useData();
@@ -15,29 +17,6 @@ const Skills = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
 
   const categories = [
     { id: 'languages', name: 'Languages', icon: FaLanguage },
@@ -52,6 +31,7 @@ const Skills = () => {
     if (name.includes('javascript') || name.includes('js')) return FaJs;
     if (name.includes('react')) return FaReact;
     if (name.includes('node') || name.includes('express')) return FaNodeJs;
+    if (name.includes('spring')) return SiSpringboot;
     if (name.includes('java')) return FaJava;
     if (name.includes('html')) return FaHtml5;
     if (name.includes('css') || name.includes('tailwind') || name.includes('bootstrap')) return FaCss3Alt;
@@ -59,194 +39,154 @@ const Skills = () => {
     if (name.includes('git')) return FaGitAlt;
     if (name.includes('docker')) return FaDocker;
     if (name.includes('aws')) return FaAws;
-    if (name.includes('bootstrap')) return FaBootstrap;
-    return FaCode;
+    if (name.includes('angular')) return FaAngular;
+    return FaTerminal;
   };
 
   const filteredSkills = skills.filter(skill => skill.category === activeCategory);
 
   if (loading) {
     return (
-      <section id="skills" className="section-padding">
-        <div className="container-custom text-center">
-          <div className="loading-dots mx-auto">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
+      <section id="skills" className="section-padding bg-mesh min-h-screen flex items-center justify-center">
+        <div className="loading-dots"><div></div><div></div><div></div><div></div></div>
       </section>
     );
   }
 
   return (
-    <section id="skills" className="section-padding bg-white dark:bg-dark-800">
-      <motion.div
-        ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
-        className="container-custom"
-      >
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            My <span className="gradient-text">Skills</span>
+    <section id="skills" className="section-padding relative overflow-hidden bg-white dark:bg-dark-950">
+      <div className="container-custom relative z-10">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
+          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-widest text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+            Expertise & Capabilities
+          </span>
+          <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6">
+            Technical <span className="gradient-text">Mastery</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-purple-600 mx-auto rounded-full mb-8"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            A comprehensive overview of my technical skills and expertise across different domains
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
+            A specialized collection of technologies I use to build robust, scalable, and high-performance digital solutions.
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4 mb-12">
+        {/* Professional Filter Bar */}
+        <div className="flex flex-wrap justify-center gap-3 mb-16">
           {categories.map((category) => (
             <motion.button
               key={category.id}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setActiveCategory(category.id)}
-              className={`flex items-center space-x-2 px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                activeCategory === category.id
-                  ? 'bg-primary-600 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600'
-              }`}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-2xl font-bold transition-all duration-500 border-2 ${activeCategory === category.id
+                ? 'bg-primary-600 border-primary-600 text-white shadow-[0_10px_20px_-5px_rgba(59,130,246,0.5)]'
+                : 'bg-white dark:bg-dark-800 border-gray-100 dark:border-white/5 text-gray-600 dark:text-gray-400 hover:border-primary-500/30'
+                }`}
             >
               <category.icon className="w-4 h-4" />
-              <span>{category.name}</span>
+              <span className="text-sm">{category.name}</span>
             </motion.button>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Skills Grid */}
+        {/* Bento Grid Layout */}
         <motion.div
-          variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          layout
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
         >
-          {filteredSkills.map((skill, index) => {
-            const IconComponent = getSkillIcon(skill.name);
-            return (
-              <motion.div
-                key={skill._id}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="card p-6 group"
-              >
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800 transition-colors duration-300">
-                    <IconComponent className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
+          <AnimatePresence mode="popLayout">
+            {filteredSkills.map((skill, index) => {
+              const IconComponent = getSkillIcon(skill.name);
+              return (
+                <motion.div
+                  key={skill._id || skill.name}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  whileHover={{ y: -8 }}
+                  className="group relative"
+                >
+                  <div className="card h-full p-8 flex flex-col items-center justify-center text-center group-hover:border-primary-500/50 transition-colors">
+                    {/* Floating Background Glow */}
+                    <div className="absolute inset-0 bg-primary-500/0 group-hover:bg-primary-500/5 rounded-2xl transition-colors duration-500"></div>
+
+                    {/* Icon with Ring */}
+                    <div className="relative mb-6">
+                      <div className="w-16 h-16 bg-gray-50 dark:bg-dark-800 rounded-2xl flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-500">
+                        <IconComponent className="w-8 h-8 text-gray-700 dark:text-gray-300 group-hover:text-primary-500 transition-colors" />
+                      </div>
+                      <div className="absolute -inset-2 border border-primary-500/0 group-hover:border-primary-500/20 rounded-2xl scale-110 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-primary-600 transition-colors">
                       {skill.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 capitalize">
-                      {skill.category.replace('_', ' ')}
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                      {skill.category}
                     </p>
-                  </div>
-                </div>
 
-                {/* Progress Bar for technical skills */}
-                {skill.category !== 'languages_spoken' && (
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Proficiency
-                      </span>
-                      <span className="text-sm font-bold text-primary-600 dark:text-primary-400">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="skill-bar">
+                    {/* Minimalist Progress Meter */}
+                    <div className="w-full h-1.5 bg-gray-100 dark:bg-dark-800 rounded-full overflow-hidden">
                       <motion.div
-                        className="skill-progress"
+                        className="h-full bg-gradient-to-r from-primary-500 to-purple-500"
                         initial={{ width: 0 }}
-                        animate={inView ? { width: `${skill.level}%` } : { width: 0 }}
-                        transition={{ duration: 1.5, delay: index * 0.1, ease: 'easeOut' }}
+                        animate={inView ? { width: `${skill.level}%` } : {}}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
                       />
                     </div>
-                  </div>
-                )}
-
-                {/* Level indicator for spoken languages */}
-                {skill.category === 'languages_spoken' && (
-                  <div className="flex items-center space-x-2">
-                    <div className="flex space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <div
-                          key={i}
-                          className={`w-2 h-2 rounded-full ${
-                            i < Math.floor(skill.level / 20)
-                              ? 'bg-primary-600 dark:bg-primary-400'
-                              : 'bg-gray-200 dark:bg-gray-700'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {skill.level === 100 ? 'Native' : 
-                       skill.level >= 80 ? 'Fluent' : 
-                       skill.level >= 60 ? 'Conversational' : 'Basic'}
+                    <span className="mt-2 text-xs font-black text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {skill.level}% Proficiency
                     </span>
                   </div>
-                )}
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </motion.div>
 
-        {/* Skills Summary */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-16 text-center"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {/* Core Expertise Summary (Professional Cards) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
+          {[
+            {
+              title: 'Frontend Mastery',
+              desc: 'Architecting high-performance, accessible interfaces using React, Next.js, and Angular, with a focus on modern design systems and seamless UX.',
+              icon: FaLayerGroup,
+              color: 'from-blue-500/20'
+            },
+            {
+              title: 'Backend Systems',
+              desc: 'Building robust, scalable server-side architectures using Node.js, Java, and Spring Boot, specializing in microservices and secure data management.',
+              icon: FaServer,
+              color: 'from-green-500/20'
+            },
+            {
+              title: 'DevOps & Tooling',
+              desc: 'Optimizing development lifecycles with Git, Docker, and CI/CD strategies to ensure high-velocity, reliable software delivery.',
+              icon: FaTools,
+              color: 'from-purple-500/20'
+            }
+          ].map((item, i) => (
             <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl text-white"
+              key={i}
+              whileHover={{ y: -10 }}
+              className="glass-card p-10 relative overflow-hidden group"
             >
-              <div className="text-3xl font-bold mb-2">
-                {skills.filter(s => s.category === 'languages').length}
-              </div>
-              <div className="text-sm opacity-90">Programming Languages</div>
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} blur-3xl opacity-50 group-hover:opacity-100 transition-opacity`}></div>
+              <item.icon className="w-12 h-12 text-gray-900 dark:text-white mb-8 group-hover:text-primary-500 transition-colors" />
+              <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4">{item.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 font-medium leading-relaxed">{item.desc}</p>
             </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {skills.filter(s => s.category === 'frontend').length}
-              </div>
-              <div className="text-sm opacity-90">Frontend Technologies</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-green-500 to-green-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {skills.filter(s => s.category === 'backend').length}
-              </div>
-              <div className="text-sm opacity-90">Backend Technologies</div>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl text-white"
-            >
-              <div className="text-3xl font-bold mb-2">
-                {skills.filter(s => s.category === 'tools').length}
-              </div>
-              <div className="text-sm opacity-90">Tools & Technologies</div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };
 
 export default Skills;
-

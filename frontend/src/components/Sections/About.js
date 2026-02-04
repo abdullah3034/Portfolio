@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaCode,  FaUsers, FaLightbulb } from 'react-icons/fa';
+import { FaCode, FaUsers, FaLightbulb, FaRocket, FaHandshake, FaTerminal } from 'react-icons/fa';
 
 const About = () => {
   const [ref, inView] = useInView({
@@ -9,176 +9,111 @@ const About = () => {
     threshold: 0.1,
   });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
   const values = [
     {
-      icon: FaCode,
-      title: 'Technical Excellence',
-      description: 'Committed to writing clean, efficient, and maintainable code using modern technologies and best practices.',
-    },
-    // {
-    //   icon: FaRocket,
-    //   title: 'Innovation',
-    //   description: 'Always exploring new technologies and approaches to solve complex problems and create better user experiences.',
-    // },
-    {
-      icon: FaUsers,
-      title: 'Collaboration',
-      description: 'Strong believer in teamwork and effective communication to deliver exceptional results in collaborative environments.',
+      icon: FaTerminal,
+      title: 'Reliable Architect',
+      description: 'Building foundations that scale. I prioritize system stability and code maintainability over quick fixes.',
+      color: 'from-blue-500 to-cyan-500'
     },
     {
-      icon: FaLightbulb,
-      title: 'Continuous Learning',
-      description: 'Passionate about expanding technical expertise and staying updated with the latest industry trends and technologies.',
+      icon: FaHandshake,
+      title: 'Problem Solver',
+      description: 'Translating complex business requirements into elegant technical solutions with a focus on user impact.',
+      color: 'from-purple-500 to-pink-500'
+    },
+    {
+      icon: FaRocket,
+      title: 'Future Focused',
+      description: 'Continuously integrating emerging technologies like AI and Cloud-native architectures into my workflow.',
+      color: 'from-orange-500 to-red-500'
     }
   ];
 
   return (
-    <section id="about" className="section-padding bg-gray-50 dark:bg-dark-900">
-      <motion.div
-        ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={inView ? 'visible' : 'hidden'}
-        className="container-custom"
-      >
-        <motion.div variants={itemVariants} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            About <span className="gradient-text">Me</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-purple-600 mx-auto rounded-full"></div>
-        </motion.div>
+    <section id="about" className="section-padding bg-white dark:bg-dark-950 relative overflow-hidden">
+      <div className="container-custom relative z-10">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* About Text */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                I am a motivated undergraduate pursuing B.Sc. (Hons) in Information Technology at the University of Moratuwa, with strong skills in React.js for front-end development and Node.js for back-end applications.
-              </p>
-              <br/>
-              
-              
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-               I have hands-on experience working with both relational databases (MySQL, PostgreSQL) and non-relational databases, enabling me to design and manage versatile, data-driven applications. My focus is on building scalable, reliable, and user-friendly web solutions by combining clean front-end interfaces with robust back-end systems.
-              </p>
-
-              <br/>
-              
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-               Passionate about leveraging technology to solve real-world problems, I continuously seek opportunities to learn, experiment, and expand my expertise. I enjoy working on challenging projects that push me to grow as a developer while creating meaningful solutions for users.
-              </p>
+          {/* Visual Side: The "Professional Persona" */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 1 }}
+            className="relative"
+          >
+            <div className="relative z-10 glass-card p-1">
+              <div className="aspect-[4/5] bg-gradient-to-br from-primary-600 via-purple-600 to-pink-600 rounded-[2rem] overflow-hidden flex items-center justify-center p-12">
+                <div className="text-center">
+                  <FaCode className="text-white text-8xl mb-8 opacity-20" />
+                  <h3 className="text-3xl font-black text-white mb-4 italic tracking-tight">"Code is temporary, Architecture is forever."</h3>
+                  <div className="w-20 h-1 bg-white/30 mx-auto rounded-full"></div>
+                </div>
+              </div>
             </div>
-
-            {/* Key Highlights */}
-            <div className="grid grid-cols-2 gap-4 pt-6">
-              {/* <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-white dark:bg-dark-800 rounded-lg shadow-md"
-              >
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">2+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-white dark:bg-dark-800 rounded-lg shadow-md"
-              >
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">10+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Projects Completed</div>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-white dark:bg-dark-800 rounded-lg shadow-md"
-              >
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">5+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Technologies</div>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-white dark:bg-dark-800 rounded-lg shadow-md"
-              >
-                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">100%</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Dedicated</div>
-              </motion.div> */}
-            </div>
+            {/* Decorative Background Accents */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
           </motion.div>
 
-          {/* Values/Principles */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              What Drives Me
-            </h3>
-            
-            <div className="space-y-4">
+          {/* Text Side: Narrative Content */}
+          <motion.div
+            ref={ref}
+            initial={{ opacity: 0, x: 50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="space-y-10"
+          >
+            <div>
+              <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-[0.3em] text-primary-600 dark:text-primary-400 uppercase bg-primary-100/50 dark:bg-primary-900/30 rounded-full border border-primary-200/50 dark:border-primary-800/50">
+                The Narrative
+              </span>
+              <h2 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white leading-[1.1] mb-8">
+                Turning Visions into <span className="gradient-text">Engineered</span> Reality
+              </h2>
+              <div className="prose prose-xl dark:prose-invert max-w-none">
+                <p className="text-gray-600 dark:text-gray-400 font-medium leading-relaxed mb-6">
+                  I am a passionate software engineer currently pursuing my B.Sc. (Hons) in Information Technology at the <span className="text-primary-600 font-bold">University of Moratuwa</span>. My journey is defined by a relentless drive to bridge the gap between complex logic and seamless user experience.
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
+
+                </p>
+              </div>Leveraging modern frameworks such as Angular, React, Spring Boot, and the MERN stack, I’ve built end-to-end software systems during my academic years that prioritize clean architecture, scalability, and secure design.
+            </div>
+
+            {/* Values / Principles Bento Blocks */}
+            <div className="grid gap-4">
               {values.map((value, index) => (
                 <motion.div
                   key={value.title}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                  transition={{ delay: index * 0.1 + 0.5 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="flex items-start space-x-4 p-4 bg-white dark:bg-dark-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  whileHover={{ x: 10 }}
+                  className="flex items-start space-x-6 p-6 bg-gray-50 dark:bg-dark-900/50 rounded-2xl border border-gray-100 dark:border-white/5 group transition-all"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center">
-                    <value.icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                  <div className={`flex-shrink-0 w-14 h-14 bg-gradient-to-br ${value.color} rounded-xl flex items-center justify-center text-white shadow-lg`}>
+                    <value.icon className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                    <h4 className="text-lg font-black text-gray-900 dark:text-white mb-2 group-hover:text-primary-500 transition-colors">
                       {value.title}
                     </h4>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
                       {value.description}
                     </p>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            <div className="pt-6">
+              <a href="#contact" className="btn-primary group !py-4 px-10">
+                Let's Build Something Together
+              </a>
+            </div>
           </motion.div>
         </div>
-
-        {/* Call to Action */}
-        <motion.div
-          variants={itemVariants}
-          className="text-center mt-16"
-        >
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary inline-flex items-center space-x-2"
-          >
-            <span>Let's Work Together</span>
-          </motion.a>
-        </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
 
 export default About;
-
