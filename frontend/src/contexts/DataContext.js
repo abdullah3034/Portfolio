@@ -25,16 +25,29 @@ export const DataProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [projectsRes, skillsRes, educationRes] = await Promise.all([
+        const [projectsRes, skillsRes, educationRes] = await Promise.allSettled([
           axios.get(`${API_BASE_URL}/projects`),
           axios.get(`${API_BASE_URL}/skills`),
           axios.get(`${API_BASE_URL}/education`)
         ]);
 
-        setProjects(projectsRes.data);
-        setSkills(skillsRes.data);
-        setEducation(educationRes.data);
-        setError(null);
+        const nextProjects = projectsRes.status === 'fulfilled' ? projectsRes.value.data : [];
+        const nextSkills = skillsRes.status === 'fulfilled' ? skillsRes.value.data : [];
+        const nextEducation = educationRes.status === 'fulfilled' ? educationRes.value.data : [];
+
+        setProjects(nextProjects);
+        setSkills(nextSkills);
+        setEducation(nextEducation);
+
+        if (
+          projectsRes.status === 'rejected' ||
+          skillsRes.status === 'rejected' ||
+          educationRes.status === 'rejected'
+        ) {
+          setError('Some portfolio data could not be loaded');
+        } else {
+          setError(null);
+        }
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load portfolio data');
