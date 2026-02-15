@@ -160,17 +160,25 @@ const Projects = () => {
         </div>
 
         {/* Dynamic Project Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project._id}
-                project={project}
-                onClick={setSelectedProject}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {filteredProjects.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600 dark:text-gray-400 font-medium">
+              No projects found. Check API/database connection and seed data.
+            </p>
+          </div>
+        ) : (
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  project={project}
+                  onClick={setSelectedProject}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
       </div>
 
       {/* Modern Project Modal (Full Page Design) */}

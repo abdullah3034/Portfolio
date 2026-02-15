@@ -79,6 +79,16 @@ const seedData = async () => {
         featured: false,
         order: 5
       },
+      {
+        title: 'Gas Delivery Driver App',
+        description: 'Offline-first LPG delivery driver app with end-to-end order flow, payment handling, and inventory tracking.',
+        longDescription: 'Built with React Native (Expo), TypeScript, and SQLite for reliable field operations without internet. Includes delivery workflow (vehicle selection -> assigned orders -> delivery confirmation -> payment -> receipt), partial-delivery support, secure cash/cheque/credit payment handling, vehicle-level inventory load/return checks, and KPI dashboards for commission, payments, inventory mix, and delivery progress.',
+        technologies: ['React Native', 'Expo', 'TypeScript', 'SQLite', 'Mobile App Development', 'Offline-first'],
+        githubUrl: 'https://github.com/abdullah3034/Gas-Delivery-Driver-App',
+        liveUrl: '',
+        featured: true,
+        order: 6
+      },
 
     ];
 
